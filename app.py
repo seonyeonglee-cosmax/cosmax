@@ -12,45 +12,49 @@ st.set_page_config(page_title="대체원료 파인더", page_icon="🧪", layout
 
 STORAGE_KEY = "substituteFinderIngredients_v1"
 
+import textwrap
+
 st.markdown(
-    """
-    <style>
-    .tag {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        margin: 2px 4px 2px 0;
-        background: #e0e0e0;
-        color: #444;
-    }
-    .tag.match { background: #4fb3a9; color: #fff; font-weight: 600; }
-    .badge {
-        display: inline-block;
-        padding: 3px 9px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-    }
-    .badge.full { background: #dff5ea; color: #1c8a52; }
-    .badge.partial { background: #fff4e0; color: #b8720b; }
-    .selected-box {
-        margin-top: 10px;
-        padding: 14px 16px;
-        border-radius: 12px;
-        background: #f1f8f7;
-        border: 1px dashed #a9d6cf;
-    }
-    .selected-box .name { font-weight: 700; font-size: 18px; }
-    .selected-box .inci { color: #78909c; font-size: 13px; margin-bottom: 8px; }
-    .result-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .result-table th, .result-table td {
-        text-align: left; padding: 10px 8px; border-bottom: 1px solid #eceff1; vertical-align: top;
-    }
-    .result-table th { color: #607d8b; font-size: 12px; font-weight: 600; }
-    .count { font-weight: 700; color: #4fb3a9; }
-    </style>
-    """,
+    textwrap.dedent(
+        """\
+        <style>
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin: 2px 4px 2px 0;
+            background: #e0e0e0;
+            color: #444;
+        }
+        .tag.match { background: #4fb3a9; color: #fff; font-weight: 600; }
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge.full { background: #dff5ea; color: #1c8a52; }
+        .badge.partial { background: #fff4e0; color: #b8720b; }
+        .selected-box {
+            margin-top: 10px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f1f8f7;
+            border: 1px dashed #a9d6cf;
+        }
+        .selected-box .name { font-weight: 700; font-size: 18px; }
+        .selected-box .inci { color: #78909c; font-size: 13px; margin-bottom: 8px; }
+        .result-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .result-table th, .result-table td {
+            text-align: left; padding: 10px 8px; border-bottom: 1px solid #eceff1; vertical-align: top;
+        }
+        .result-table th { color: #607d8b; font-size: 12px; font-weight: 600; }
+        .count { font-weight: 700; color: #4fb3a9; }
+        </style>
+        """
+    ),
     unsafe_allow_html=True,
 )
 
@@ -2344,14 +2348,11 @@ def render_tags(functions, matched=None, as_html=True):
 # 헤더
 # --------------------------------------------------------------------------
 st.markdown(
-    """
-    <div style="text-align:center; margin-bottom: 10px;">
-        <h1 style="margin-bottom:4px;">🧪 대체원료 파인더</h1>
-        <p style="color:#607d8b; font-size:14px;">
-            원료 하나를 제외하면, 기능이 겹치는 대체 후보를 자동으로 찾아 정리해주는 처방 보조 도구
-        </p>
-    </div>
-    """,
+    '<div style="text-align:center; margin-bottom: 10px;">'
+    '<h1 style="margin-bottom:4px;">🧪 대체원료 파인더</h1>'
+    '<p style="color:#607d8b; font-size:14px;">'
+    '원료 하나를 제외하면, 기능이 겹치는 대체 후보를 자동으로 찾아 정리해주는 처방 보조 도구'
+    '</p></div>',
     unsafe_allow_html=True,
 )
 
@@ -2376,13 +2377,11 @@ if selected_name and not target:
     st.info(f"'{selected_name}' 원료를 목록에서 찾을 수 없습니다. 아래 '원료 데이터 관리'에서 추가해주세요.")
 elif target:
     st.markdown(
-        f"""
-        <div class="selected-box">
-            <div class="name">{target['name']}</div>
-            <div class="inci">{target.get('inci', '')}</div>
-            <div>{render_tags(target['functions'])}</div>
-        </div>
-        """,
+        '<div class="selected-box">'
+        f'<div class="name">{target["name"]}</div>'
+        f'<div class="inci">{target.get("inci", "")}</div>'
+        f'<div>{render_tags(target["functions"])}</div>'
+        '</div>',
         unsafe_allow_html=True,
     )
 
@@ -2428,26 +2427,26 @@ else:
                 else f'<span class="badge partial">부분 대체 {c["match_count"]}/{len(target["functions"])}</span>'
             )
             tags_html = render_tags(ing["functions"], matched=c["matched_fns"])
-            rows_html += f"""
-                <tr>
-                    <td><strong>{ing['name']}</strong></td>
-                    <td>{ing.get('inci', '')}</td>
-                    <td>{tags_html}</td>
-                    <td><span class="count">{c['match_count']}</span></td>
-                    <td>{badge}</td>
-                </tr>
-            """
+            rows_html += (
+                "<tr>"
+                f'<td><strong>{ing["name"]}</strong></td>'
+                f'<td>{ing.get("inci", "")}</td>'
+                f"<td>{tags_html}</td>"
+                f'<td><span class="count">{c["match_count"]}</span></td>'
+                f"<td>{badge}</td>"
+                "</tr>"
+            )
 
-        table_html = f"""
-        <div style="overflow-x:auto;">
-        <table class="result-table">
-            <thead>
-                <tr><th>원료명</th><th>INCI명</th><th>기능 (● 일치)</th><th>일치개수</th><th>대체 가능성</th></tr>
-            </thead>
-            <tbody>{rows_html}</tbody>
-        </table>
-        </div>
-        """
+        table_html = (
+            '<div style="overflow-x:auto;">'
+            '<table class="result-table">'
+            "<thead><tr>"
+            "<th>원료명</th><th>INCI명</th><th>기능 (● 일치)</th>"
+            "<th>일치개수</th><th>대체 가능성</th>"
+            "</tr></thead>"
+            f"<tbody>{rows_html}</tbody>"
+            "</table></div>"
+        )
         st.markdown(table_html, unsafe_allow_html=True)
 
 # --------------------------------------------------------------------------
